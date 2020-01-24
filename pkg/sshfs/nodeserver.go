@@ -188,7 +188,7 @@ func writePrivateKey(secret *v1.Secret) (string, error) {
 	return f.Name(), nil
 }
 
-func Mount(user string, host string, port string, dir string, target string, privateKey string, sshOpts string) error {
+func Mount(user string, host string, port string, dir string, target string, privateKey string, sshOpts map[string]string) error {
 	mountCmd := "sshfs"
 	mountArgs := []string{}
 
@@ -204,7 +204,11 @@ func Mount(user string, host string, port string, dir string, target string, pri
 	)
 
 	if len(sshOpts) > 0 {
-		mountArgs = append(mountArgs, "-o", sshOpts)
+		addOpts := []string {}
+		for key, val := range sshOpts {
+			addOpts = append(opts, key+"="+val)
+		}
+		mountArgs = append(mountArgs, "-o", strings.Join(addOpts, ","))
 	}
 
 	// create target, os.Mkdirall is noop if it exists
