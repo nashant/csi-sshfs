@@ -1,4 +1,4 @@
-FROM golang:1.12-alpine3.9 AS  build-env
+FROM arm64v8/golang:1.12-alpine3.9 AS  build-env
 RUN apk add --no-cache git
 
 ENV CGO_ENABLED=0, GO111MODULE=on
